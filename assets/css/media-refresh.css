@@ -1,0 +1,69 @@
+/* Refreshed visual assets */
+.banner-shattered {
+  background-image: url('../images/regions/shattered-isles.png'), url('../images/maps/veyra-current-world-map.webp');
+  background-position: center;
+}
+
+.feature-shattered {
+  background-image:
+    linear-gradient(to top, rgba(10,8,6,.60), rgba(10,8,6,.04)),
+    url('../images/regions/shattered-isles.png');
+  background-position: center;
+}
+
+.people-entry {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.72fr) minmax(0, 1.28fr);
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: center;
+  margin: 0 0 4rem;
+  padding-bottom: 4rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.people-entry:last-of-type {
+  margin-bottom: 2rem;
+}
+
+.people-entry h2 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.people-portrait {
+  margin: 0;
+  position: relative;
+}
+
+.people-portrait::before {
+  content: "";
+  position: absolute;
+  inset: .55rem;
+  z-index: 1;
+  border: 1px solid rgba(209,183,119,.26);
+  pointer-events: none;
+}
+
+.people-portrait img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: center top;
+  border: 1px solid var(--line-strong);
+  background: var(--panel);
+  box-shadow: 0 24px 55px rgba(0,0,0,.35);
+}
+
+.people-copy > :first-child {
+  margin-top: 0;
+}
+
+@media (max-width: 760px) {
+  .people-entry {
+    grid-template-columns: 1fr;
+  }
+
+  .people-portrait {
+    width: min(100%, 430px);
+  }
+}
