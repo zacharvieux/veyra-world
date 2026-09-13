@@ -11,6 +11,18 @@
   background-position: center;
 }
 
+/* Preserve the natural proportions of the refreshed divider art. */
+.section-divider,
+.section-divider-signature {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 170px;
+  object-fit: contain;
+  margin-inline: auto;
+}
+
 .people-entry {
   display: grid;
   grid-template-columns: minmax(220px, 0.72fr) minmax(0, 1.28fr);
@@ -59,6 +71,11 @@
 }
 
 @media (max-width: 760px) {
+  .section-divider,
+  .section-divider-signature {
+    max-height: 120px;
+  }
+
   .people-entry {
     grid-template-columns: 1fr;
   }
