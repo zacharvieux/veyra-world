@@ -36,6 +36,57 @@
   margin: 0 auto 1.4rem;
 }
 
+/* Let reference pages use the screen without creating unreadably long lines. */
+.guide-layout {
+  grid-template-columns: minmax(180px, 220px) minmax(0, 1fr);
+}
+
+.guide-content {
+  min-width: 0;
+  width: 100%;
+  max-width: 930px;
+}
+
+.guide-layout > .guide-content:only-child {
+  grid-column: 1 / -1;
+  width: min(100%, 930px);
+  margin-inline: auto;
+}
+
+.prose > p,
+.prose > ul,
+.prose > ol,
+.prose > blockquote,
+.prose > .table-wrap {
+  max-width: 80ch;
+}
+
+.fact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .75rem;
+  margin: 1.5rem 0 2.5rem;
+}
+
+.fact-card {
+  padding: 1rem 1.05rem;
+  border: 1px solid var(--line);
+  background: rgba(23,19,15,.72);
+}
+
+.fact-card strong {
+  display: block;
+  margin-bottom: .35rem;
+  color: var(--gold-bright);
+  font: 800 .73rem/1.2 var(--sans);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.fact-card span {
+  color: #d2c7b6;
+}
+
 .people-entry {
   display: grid;
   grid-template-columns: minmax(220px, 0.72fr) minmax(0, 1.28fr);
@@ -83,6 +134,16 @@
   margin-top: 0;
 }
 
+@media (max-width: 900px) {
+  .guide-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .guide-content {
+    max-width: none;
+  }
+}
+
 @media (max-width: 760px) {
   .section-divider,
   .section-divider-signature {
@@ -91,6 +152,10 @@
 
   .callout-emblem {
     width: 120px;
+  }
+
+  .fact-grid {
+    grid-template-columns: 1fr;
   }
 
   .people-entry {
