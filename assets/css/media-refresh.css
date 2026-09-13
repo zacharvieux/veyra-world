@@ -1,0 +1,168 @@
+/* Refreshed visual assets */
+.banner-shattered {
+  background-image: url('../images/regions/shattered-isles.png'), url('../images/maps/veyra-current-world-map.webp');
+  background-position: center;
+}
+
+.feature-shattered {
+  background-image:
+    linear-gradient(to top, rgba(10,8,6,.60), rgba(10,8,6,.04)),
+    url('../images/regions/shattered-isles.png');
+  background-position: center;
+}
+
+/* Preserve the natural proportions of the refreshed divider art. */
+.section-divider,
+.section-divider-signature {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 170px;
+  object-fit: contain;
+  margin-inline: auto;
+}
+
+/* The refreshed world-tree emblem is not square. Override the old
+   width/height HTML hints so the browser keeps the artwork's real ratio. */
+.callout-emblem {
+  display: block;
+  width: clamp(120px, 10vw, 150px);
+  height: auto !important;
+  max-width: 100%;
+  max-height: none;
+  aspect-ratio: auto !important;
+  object-fit: contain;
+  margin: 0 auto 1.4rem;
+}
+
+/* Let reference pages use the screen without creating unreadably long lines. */
+.guide-layout {
+  grid-template-columns: minmax(180px, 220px) minmax(0, 1fr);
+}
+
+.guide-content {
+  min-width: 0;
+  width: 100%;
+  max-width: 930px;
+}
+
+.guide-layout > .guide-content:only-child {
+  grid-column: 1 / -1;
+  width: min(100%, 930px);
+  margin-inline: auto;
+}
+
+.prose > p,
+.prose > ul,
+.prose > ol,
+.prose > blockquote,
+.prose > .table-wrap {
+  max-width: 80ch;
+}
+
+.fact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .75rem;
+  margin: 1.5rem 0 2.5rem;
+}
+
+.fact-card {
+  padding: 1rem 1.05rem;
+  border: 1px solid var(--line);
+  background: rgba(23,19,15,.72);
+}
+
+.fact-card strong {
+  display: block;
+  margin-bottom: .35rem;
+  color: var(--gold-bright);
+  font: 800 .73rem/1.2 var(--sans);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.fact-card span {
+  color: #d2c7b6;
+}
+
+.people-entry {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.72fr) minmax(0, 1.28fr);
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: center;
+  margin: 0 0 4rem;
+  padding-bottom: 4rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.people-entry:last-of-type {
+  margin-bottom: 2rem;
+}
+
+.people-entry h2 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.people-portrait {
+  margin: 0;
+  position: relative;
+}
+
+.people-portrait::before {
+  content: "";
+  position: absolute;
+  inset: .55rem;
+  z-index: 1;
+  border: 1px solid rgba(209,183,119,.26);
+  pointer-events: none;
+}
+
+.people-portrait img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: center top;
+  border: 1px solid var(--line-strong);
+  background: var(--panel);
+  box-shadow: 0 24px 55px rgba(0,0,0,.35);
+}
+
+.people-copy > :first-child {
+  margin-top: 0;
+}
+
+@media (max-width: 900px) {
+  .guide-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .guide-content {
+    max-width: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .section-divider,
+  .section-divider-signature {
+    max-height: 120px;
+  }
+
+  .callout-emblem {
+    width: 120px;
+  }
+
+  .fact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .people-entry {
+    grid-template-columns: 1fr;
+  }
+
+  .people-portrait {
+    width: min(100%, 430px);
+  }
+}
