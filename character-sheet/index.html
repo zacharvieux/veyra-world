@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Interactive, locally saved, printer-friendly character sheet for the Veyra roleplaying game.">
+  <meta name="theme-color" content="#0f0d0a">
+  <title>Character Sheet | Veyra</title>
+  <link rel="icon" type="image/png" href="../assets/images/brand/favicon.png">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <link rel="stylesheet" href="../assets/css/character-sheet.css">
+</head>
+<body class="character-sheet-page">
+  <header class="site-header no-print">
+    <a class="brand" href="../index.html" aria-label="Veyra home">
+      <img class="brand-mark-image" src="../assets/images/ui/icons/icon-veyra-sundered-world-seal.png" alt="" width="36" height="36">
+      <span class="brand-name">VEYRA</span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">Menu</button>
+    <nav id="primary-nav" class="site-nav" aria-label="Primary navigation">
+      <a href="../world-guide/index.html">World Guide</a>
+      <a href="../world-guide/adventurer.html">Create an Adventurer</a>
+      <a href="../rules/index.html">Rules</a>
+      <a href="index.html" aria-current="page">Character Sheet</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="sheet-intro no-print">
+      <div class="shell">
+        <p class="eyebrow">Player Tool</p>
+        <h1>Interactive Character Sheet</h1>
+        <p>Fill it in in your browser, let Veyra calculate your derived resources, save locally, and print a clean two-page sheet or save it as a PDF.</p>
+      </div>
+    </section>
+
+    <div class="sheet-toolbar no-print" role="region" aria-label="Character sheet controls">
+      <div class="shell toolbar-inner">
+        <div class="toolbar-status">
+          <strong id="save-status">Ready</strong>
+          <span>Your character is stored only in this browser unless you export it.</span>
+        </div>
+        <div class="toolbar-actions">
+          <button type="button" class="sheet-button primary" id="save-button">Save</button>
+          <button type="button" class="sheet-button" id="print-button">Print / Save PDF</button>
+          <button type="button" class="sheet-button" id="export-button">Export</button>
+          <label class="sheet-button file-button" for="import-file">Import</label>
+          <input id="import-file" type="file" accept="application/json,.json" hidden>
+          <button type="button" class="sheet-button danger" id="clear-button">Clear</button>
+        </div>
+      </div>
+    </div>
+
+    <form id="veyra-character-sheet" autocomplete="off">
+      <section class="sheet-page page-one" aria-label="Character sheet page one">
+        <header class="sheet-page-header">
+          <div class="sheet-brand-lockup">
+            <img src="../assets/images/ui/icons/icon-veyra-sundered-world-seal.png" alt="" width="64" height="64">
+            <div><span>VEYRA</span><small>Character Sheet · Page 1</small></div>
+          </div>
+          <label class="field character-name-field">
+            <span>Character Name</span>
+            <input type="text" name="character-name" aria-label="Character name">
+          </label>
+        </header>
+
+        <section class="sheet-panel identity-panel">
+          <h2>Identity</h2>
+          <div class="identity-grid">
+            <label class="field"><span>Player</span><input type="text" name="player-name"></label>
+            <label class="field"><span>People</span><input type="text" name="people" placeholder="Human, Beastfolk, Dwarf, Elf, Demonkin…"></label>
+            <label class="field"><span>Homeland</span><input type="text" name="homeland"></label>
+            <label class="field"><span>Background</span><input type="text" name="background"></label>
+            <label class="field"><span>Age / Life Stage</span><input type="text" name="age-life-stage"></label>
+            <label class="field"><span>Pronouns</span><input type="text" name="pronouns"></label>
+            <label class="field field-wide"><span>Appearance</span><input type="text" name="appearance"></label>
+          </div>
+        </section>
+
+        <div class="sheet-columns sheet-columns-top">
+          <section class="sheet-panel attributes-panel">
+            <h2>Attributes</h2>
+            <div class="attribute-grid">
+              <label class="attribute-box"><span>Brawn</span><input type="number" min="1" max="6" inputmode="numeric" name="attr-brawn" data-attribute="brawn"></label>
+              <label class="attribute-box"><span>Agility</span><input type="number" min="1" max="6" inputmode="numeric" name="attr-agility" data-attribute="agility"></label>
+              <label class="attribute-box"><span>Intellect</span><input type="number" min="1" max="6" inputmode="numeric" name="attr-intellect" data-attribute="intellect"></label>
+              <label class="attribute-box"><span>Vigor</span><input type="number" min="1" max="6" inputmode="numeric" name="attr-vigor" data-attribute="vigor"></label>
+            </div>
+            <p class="microcopy">Starting Attributes: roll 6d4, keep any four, and assign them. No People modifiers.</p>
+          </section>
+
+          <section class="sheet-panel resources-panel">
+            <h2>Resources</h2>
+            <div class="resource-grid">
+              <div class="resource-card">
+                <span>Health</span>
+                <div><label><small>Current</small><input type="number" min="0" inputmode="numeric" name="health-current" data-current-for="health"></label><span>/</span><label><small>Max</small><input type="number" name="health-max" data-max-resource="health" readonly></label></div>
+                <small>(Brawn + Vigor) × 2</small>
+              </div>
+              <div class="resource-card">
+                <span>Stamina</span>
+                <div><label><small>Current</small><input type="number" min="0" inputmode="numeric" name="stamina-current" data-current-for="stamina"></label><span>/</span><label><small>Max</small><input type="number" name="stamina-max" data-max-resource="stamina" readonly></label></div>
+                <small>(Agility + Vigor) × 2</small>
+              </div>
+              <div class="resource-card" id="mana-card">
+                <span>Mana</span>
+                <div><label><small>Current</small><input type="number" min="0" inputmode="numeric" name="mana-current" data-current-for="mana"></label><span>/</span><label><small>Max</small><input type="number" name="mana-max" data-max-resource="mana" readonly></label></div>
+                <small>Open Gift only · (Intellect + Vigor) × 2</small>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <section class="sheet-panel gift-panel">
+          <div class="panel-title-row">
+            <h2>Mark &amp; Gift</h2>
+            <label class="compact-field"><span>Gift Type</span><select name="gift-type" id="gift-type"><option value="">Choose…</option><option value="fixed">Fixed</option><option value="open">Open</option></select></label>
+          </div>
+          <div class="gift-grid">
+            <label class="field"><span>Mark / Appearance</span><input type="text" name="mark-description"></label>
+            <label class="field"><span>Coming-of-Age Place / Witness</span><input type="text" name="mark-witness"></label>
+            <label class="field"><span>Human Resonance, if applicable</span><input type="text" name="human-resonance" placeholder="Solenne, Nyvara, Elyra, Morthain"></label>
+          </div>
+          <div class="gift-detail fixed-gift-only" hidden>
+            <div class="gift-grid">
+              <label class="field"><span>Fixed Gift Name</span><input type="text" name="fixed-gift-name"></label>
+              <label class="field"><span>Revelation Stage</span><select name="fixed-gift-stage"><option value="">Choose…</option><option>Manifested</option><option>Awakened</option><option>Transcendent</option></select></label>
+              <label class="field field-wide"><span>Gift Effect / Supernatural Truth</span><textarea name="fixed-gift-effect" rows="2"></textarea></label>
+              <label class="field field-wide"><span>Narrow Edge Circumstance (+1d6)</span><input type="text" name="fixed-gift-edge"></label>
+            </div>
+          </div>
+          <div class="gift-detail open-gift-only" hidden>
+            <div class="gift-grid">
+              <label class="field"><span>Magical Tradition</span><input type="text" name="magic-tradition"></label>
+              <label class="field"><span>Teacher / School / Lineage</span><input type="text" name="magic-teacher"></label>
+              <label class="field field-wide"><span>Training &amp; Practice</span><input type="text" name="magic-training"></label>
+            </div>
+          </div>
+        </section>
+
+        <section class="sheet-panel foundations-panel">
+          <h2>Foundations &amp; Specializations</h2>
+          <div class="foundation-table-wrap">
+            <table class="foundation-table">
+              <thead><tr><th>Foundation</th><th>Rank</th><th>Specialization(s)</th><th>Rank(s)</th></tr></thead>
+              <tbody>
+                <tr><th>Athletics</th><td><input aria-label="Athletics rank" type="number" min="0" max="10" name="foundation-athletics"></td><td><input aria-label="Athletics specializations" type="text" name="specializations-athletics"></td><td><input aria-label="Athletics specialization ranks" type="text" name="specialization-ranks-athletics"></td></tr>
+                <tr><th>Combat</th><td><input aria-label="Combat rank" type="number" min="0" max="10" name="foundation-combat"></td><td><input aria-label="Combat specializations" type="text" name="specializations-combat"></td><td><input aria-label="Combat specialization ranks" type="text" name="specialization-ranks-combat"></td></tr>
+                <tr><th>Craft</th><td><input aria-label="Craft rank" type="number" min="0" max="10" name="foundation-craft"></td><td><input aria-label="Craft specializations" type="text" name="specializations-craft"></td><td><input aria-label="Craft specialization ranks" type="text" name="specialization-ranks-craft"></td></tr>
+                <tr><th>Influence</th><td><input aria-label="Influence rank" type="number" min="0" max="10" name="foundation-influence"></td><td><input aria-label="Influence specializations" type="text" name="specializations-influence"></td><td><input aria-label="Influence specialization ranks" type="text" name="specialization-ranks-influence"></td></tr>
+                <tr><th>Investigation</th><td><input aria-label="Investigation rank" type="number" min="0" max="10" name="foundation-investigation"></td><td><input aria-label="Investigation specializations" type="text" name="specializations-investigation"></td><td><input aria-label="Investigation specialization ranks" type="text" name="specialization-ranks-investigation"></td></tr>
+                <tr><th>Lore</th><td><input aria-label="Lore rank" type="number" min="0" max="10" name="foundation-lore"></td><td><input aria-label="Lore specializations" type="text" name="specializations-lore"></td><td><input aria-label="Lore specialization ranks" type="text" name="specialization-ranks-lore"></td></tr>
+                <tr><th>Medicine</th><td><input aria-label="Medicine rank" type="number" min="0" max="10" name="foundation-medicine"></td><td><input aria-label="Medicine specializations" type="text" name="specializations-medicine"></td><td><input aria-label="Medicine specialization ranks" type="text" name="specialization-ranks-medicine"></td></tr>
+                <tr><th>Nature</th><td><input aria-label="Nature rank" type="number" min="0" max="10" name="foundation-nature"></td><td><input aria-label="Nature specializations" type="text" name="specializations-nature"></td><td><input aria-label="Nature specialization ranks" type="text" name="specialization-ranks-nature"></td></tr>
+                <tr><th>Stealth</th><td><input aria-label="Stealth rank" type="number" min="0" max="10" name="foundation-stealth"></td><td><input aria-label="Stealth specializations" type="text" name="specializations-stealth"></td><td><input aria-label="Stealth specialization ranks" type="text" name="specialization-ranks-stealth"></td></tr>
+                <tr><th>Survival</th><td><input aria-label="Survival rank" type="number" min="0" max="10" name="foundation-survival"></td><td><input aria-label="Survival specializations" type="text" name="specializations-survival"></td><td><input aria-label="Survival specialization ranks" type="text" name="specialization-ranks-survival"></td></tr>
+                <tr><th>Travel</th><td><input aria-label="Travel rank" type="number" min="0" max="10" name="foundation-travel"></td><td><input aria-label="Travel specializations" type="text" name="specializations-travel"></td><td><input aria-label="Travel specialization ranks" type="text" name="specialization-ranks-travel"></td></tr>
+                <tr><th>Magic</th><td><input aria-label="Magic rank" type="number" min="0" max="10" name="foundation-magic"></td><td><input aria-label="Magic specializations" type="text" name="specializations-magic"></td><td><input aria-label="Magic specialization ranks" type="text" name="specialization-ranks-magic"></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <div class="sheet-columns combat-row">
+          <section class="sheet-panel combat-panel">
+            <h2>Combat &amp; Defense</h2>
+            <div class="combat-grid">
+              <label class="field"><span>Common Attack Pool</span><input type="text" name="attack-pool" placeholder="e.g. 7d6"></label>
+              <label class="field"><span>Common Defense Pool</span><input type="text" name="defense-pool" placeholder="e.g. 6d6"></label>
+              <label class="field"><span>Armor</span><input type="number" min="0" inputmode="numeric" name="armor"></label>
+              <label class="field"><span>Shield</span><select name="shield"><option value="">None / Other</option><option>Wood (+1 defense success)</option><option>Steel (+2 defense successes)</option></select></label>
+              <label class="field"><span>Current Death Dice</span><input type="number" min="1" inputmode="numeric" name="death-dice-current"></label>
+              <label class="field"><span>Bleed</span><input type="number" min="0" inputmode="numeric" name="bleed"></label>
+            </div>
+            <div class="condition-flags" aria-label="Common condition flags">
+              <label><input type="checkbox" name="condition-exhausted"> Exhausted</label>
+              <label><input type="checkbox" name="condition-critical"> Critical Condition</label>
+              <label><input type="checkbox" name="condition-unconscious"> Unconscious</label>
+            </div>
+            <label class="field"><span>Other Conditions</span><input type="text" name="other-conditions"></label>
+            <label class="field"><span>Miasma Exposure / Notes</span><input type="text" name="miasma-exposure"></label>
+          </section>
+
+          <section class="sheet-panel move-panel">
+            <h2>Signature Special Move</h2>
+            <label class="field"><span>Name</span><input type="text" name="special-move-1-name"></label>
+            <label class="field"><span>Foundation / Specialization</span><input type="text" name="special-move-1-source"></label>
+            <label class="field"><span>Effect</span><textarea name="special-move-1-effect" rows="6"></textarea></label>
+          </section>
+        </div>
+
+        <footer class="sheet-page-footer"><span>Core roll: Attribute + Foundation + Specialization + modifiers</span><span>Default TN 4 · 6s explode</span></footer>
+      </section>
+
+      <section class="sheet-page page-two" aria-label="Character sheet page two">
+        <header class="sheet-page-header compact">
+          <div class="sheet-brand-lockup">
+            <img src="../assets/images/ui/icons/icon-open-book-star.png" alt="" width="54" height="54">
+            <div><span>VEYRA</span><small>Character Sheet · Page 2</small></div>
+          </div>
+          <div class="page-two-name"><span>Character</span><strong data-character-name-display>Unnamed Adventurer</strong></div>
+        </header>
+
+        <div class="sheet-columns story-columns">
+          <section class="sheet-panel">
+            <h2>Life &amp; Perspective</h2>
+            <label class="field"><span>Languages</span><textarea name="languages" rows="2"></textarea></label>
+            <label class="field"><span>Faith / Philosophy</span><textarea name="faith-philosophy" rows="2"></textarea></label>
+            <label class="field"><span>Ordinary Social Knowledge</span><textarea name="social-knowledge" rows="3" placeholder="What does your homeland teach you to treat as normal?"></textarea></label>
+            <label class="field"><span>Coming-of-Age Story</span><textarea name="coming-of-age-story" rows="4"></textarea></label>
+          </section>
+
+          <section class="sheet-panel ties-panel">
+            <h2>Personal Ties</h2>
+            <label class="field"><span>Bond — Who would you return home for?</span><input type="text" name="bond"></label>
+            <label class="field"><span>Obligation — What do you owe?</span><input type="text" name="obligation"></label>
+            <label class="field"><span>Belief — What do you think is true?</span><input type="text" name="belief"></label>
+            <label class="field"><span>Doubt — What are you beginning to question?</span><input type="text" name="doubt"></label>
+            <label class="field"><span>Goal — What do you actively want?</span><input type="text" name="goal"></label>
+            <label class="field"><span>Fear — What could make you walk away?</span><input type="text" name="fear"></label>
+            <label class="field"><span>Personal Item</span><input type="text" name="personal-item"></label>
+            <label class="field"><span>Why Are You Adventuring?</span><textarea name="adventuring-reason" rows="2"></textarea></label>
+          </section>
+        </div>
+
+        <div class="sheet-columns development-columns">
+          <section class="sheet-panel">
+            <div class="panel-title-row"><h2>Development</h2><label class="compact-field xp-field"><span>XP</span><input type="number" min="0" inputmode="numeric" name="xp"></label></div>
+            <div class="fixed-gift-only" hidden>
+              <h3>Revelations</h3>
+              <label class="field"><span>Manifested</span><textarea name="revelation-manifested" rows="2"></textarea></label>
+              <label class="field"><span>Awakened</span><textarea name="revelation-awakened" rows="2"></textarea></label>
+              <label class="field"><span>Transcendent</span><textarea name="revelation-transcendent" rows="2"></textarea></label>
+            </div>
+            <div class="open-gift-only" hidden>
+              <h3>Spells / Magical Techniques</h3>
+              <textarea class="lined-notes" name="spells-techniques" rows="10" placeholder="Name, cost, roll, effect, or other player-facing notes"></textarea>
+            </div>
+            <div class="no-gift-selected">
+              <p class="empty-gift-note">Choose Fixed or Open Gift on page 1 to show the appropriate development area.</p>
+            </div>
+          </section>
+
+          <section class="sheet-panel">
+            <h2>Additional Special Moves</h2>
+            <div class="move-list">
+              <div class="move-row"><input type="text" name="special-move-2-name" aria-label="Special move 2 name" placeholder="Move name"><textarea name="special-move-2-effect" aria-label="Special move 2 effect" rows="2" placeholder="Effect"></textarea></div>
+              <div class="move-row"><input type="text" name="special-move-3-name" aria-label="Special move 3 name" placeholder="Move name"><textarea name="special-move-3-effect" aria-label="Special move 3 effect" rows="2" placeholder="Effect"></textarea></div>
+              <div class="move-row"><input type="text" name="special-move-4-name" aria-label="Special move 4 name" placeholder="Move name"><textarea name="special-move-4-effect" aria-label="Special move 4 effect" rows="2" placeholder="Effect"></textarea></div>
+              <div class="move-row"><input type="text" name="special-move-5-name" aria-label="Special move 5 name" placeholder="Move name"><textarea name="special-move-5-effect" aria-label="Special move 5 effect" rows="2" placeholder="Effect"></textarea></div>
+            </div>
+          </section>
+        </div>
+
+        <div class="sheet-columns inventory-columns">
+          <section class="sheet-panel">
+            <h2>Equipment &amp; Resources</h2>
+            <label class="field"><span>Weapons / Tools</span><textarea name="weapons-tools" rows="4"></textarea></label>
+            <label class="field"><span>Armor / Worn Gear</span><textarea name="worn-gear" rows="3"></textarea></label>
+            <label class="field"><span>Carried Gear / Valuables</span><textarea name="carried-gear" rows="4"></textarea></label>
+          </section>
+          <section class="sheet-panel">
+            <h2>Notes</h2>
+            <textarea class="lined-notes tall-notes" name="notes" rows="14" aria-label="Character notes"></textarea>
+          </section>
+        </div>
+
+        <section class="sheet-panel quick-reference-panel">
+          <h2>Quick Reference</h2>
+          <div class="quick-reference-grid">
+            <span><strong>Advantage</strong> +1d6</span>
+            <span><strong>Strong Advantage</strong> +2d6</span>
+            <span><strong>Push Yourself</strong> 2 Stamina → +1d6 physical roll, once/round</span>
+            <span><strong>Damage</strong> 1 + net attacker successes − Armor, minimum 0</span>
+            <span><strong>Short Rest</strong> restore Vigor Stamina</span>
+            <span><strong>Full Rest</strong> restore all Stamina</span>
+            <span><strong>0 Health</strong> Critical Condition; Death Save each turn</span>
+            <span><strong>Death Pool</strong> begins at Vigor d6, TN 4, 1 success</span>
+          </div>
+        </section>
+
+        <footer class="sheet-page-footer"><span>Your people gives you a heritage. Your homeland gives you a culture.</span><span>Your choices determine who you become.</span></footer>
+      </section>
+    </form>
+  </main>
+
+  <script src="../assets/js/site.js"></script>
+  <script src="../assets/js/character-sheet.js"></script>
+</body>
+</html>
