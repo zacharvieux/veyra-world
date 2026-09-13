@@ -16,6 +16,14 @@ if (siteScript) {
   document.head.appendChild(mediaStylesheet);
 }
 
-document.querySelectorAll('img[src*="assets/images/ui/icons/"][src$=".webp"]').forEach((image) => {
-  image.src = image.getAttribute('src').replace(/\.webp$/i, '.png');
+const refreshedAssetSelectors = [
+  'img[src*="assets/images/ui/icons/"][src$=".webp"]',
+  'img[src*="assets/images/ui/dividers/"][src$=".webp"]'
+].join(',');
+
+document.querySelectorAll(refreshedAssetSelectors).forEach((image) => {
+  const currentSrc = image.getAttribute('src');
+  if (currentSrc) {
+    image.src = currentSrc.replace(/\.webp$/i, '.png');
+  }
 });
